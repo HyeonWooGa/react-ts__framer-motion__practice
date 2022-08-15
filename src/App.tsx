@@ -1,5 +1,11 @@
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+
+const P = styled(motion.p)`
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+`;
 
 const Wrapper = styled(motion.div)`
   height: 100vh;
@@ -7,12 +13,12 @@ const Wrapper = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, rgb(238, 0, 154), rgb(221, 0, 238));
+  background-color: black;
 `;
 
-const Svg = styled.svg`
-  width: 300px;
-  height: 300px;
+const Svg = styled(motion.svg)`
+  width: 200px;
+  height: 200px;
   path {
     stroke: white;
     stroke-width: 2;
@@ -20,6 +26,11 @@ const Svg = styled.svg`
 `;
 
 const svg = {
+  start: { y: 300 },
+  end: { y: -600, transition: { duration: 3, delay: 3 } },
+};
+
+const path = {
   start: { pathLength: 0, fill: "rgba(255,255,255,0)" },
   end: {
     pathLength: 1,
@@ -28,20 +39,30 @@ const svg = {
 };
 
 function App() {
+  const y = useMotionValue(300);
+  const scale = useTransform(y, [300, -600], [1, 0.2]);
   return (
     <Wrapper>
-      <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+      <Svg
+        style={{ y, scale }}
+        variants={svg}
+        initial="start"
+        animate="end"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512"
+      >
         <motion.path
-          variants={svg}
+          variants={path}
           initial="start"
           animate="end"
           transition={{
-            default: { duration: 5 },
-            fill: { duration: 2, delay: 2.5 },
+            default: { duration: 2.5 },
+            fill: { duration: 1, delay: 1.5 },
           }}
-          d="M224 373.12c-25.24-31.67-40.08-59.43-45-83.18-22.55-88 112.61-88 90.06 0-5.45 24.25-20.29 52-45 83.18zm138.15 73.23c-42.06 18.31-83.67-10.88-119.3-50.47 103.9-130.07 46.11-200-18.85-200-54.92 0-85.16 46.51-73.28 100.5 6.93 29.19 25.23 62.39 54.43 99.5-32.53 36.05-60.55 52.69-85.15 54.92-50 7.43-89.11-41.06-71.3-91.09 15.1-39.16 111.72-231.18 115.87-241.56 15.75-30.07 25.56-57.4 59.38-57.4 32.34 0 43.4 25.94 60.37 59.87 36 70.62 89.35 177.48 114.84 239.09 13.17 33.07-1.37 71.29-37.01 86.64zm47-136.12C280.27 35.93 273.13 32 224 32c-45.52 0-64.87 31.67-84.66 72.79C33.18 317.1 22.89 347.19 22 349.81-3.22 419.14 48.74 480 111.63 480c21.71 0 60.61-6.06 112.37-62.4 58.68 63.78 101.26 62.4 112.37 62.4 62.89.05 114.85-60.86 89.61-130.19.02-3.89-16.82-38.9-16.82-39.58z"
+          d="M156.6 384.9L125.7 353.1C117.2 345.5 114.2 333.1 117.1 321.8C120.1 312.9 124.1 301.3 129.8 288H24C15.38 288 7.414 283.4 3.146 275.9C-1.123 268.4-1.042 259.2 3.357 251.8L55.83 163.3C68.79 141.4 92.33 127.1 117.8 127.1H200C202.4 124 204.8 120.3 207.2 116.7C289.1-4.07 411.1-8.142 483.9 5.275C495.6 7.414 504.6 16.43 506.7 28.06C520.1 100.9 516.1 222.9 395.3 304.8C391.8 307.2 387.1 309.6 384 311.1V394.2C384 419.7 370.6 443.2 348.7 456.2L260.2 508.6C252.8 513 243.6 513.1 236.1 508.9C228.6 504.6 224 496.6 224 488V380.8C209.9 385.6 197.6 389.7 188.3 392.7C177.1 396.3 164.9 393.2 156.6 384.9V384.9zM384 167.1C406.1 167.1 424 150.1 424 127.1C424 105.9 406.1 87.1 384 87.1C361.9 87.1 344 105.9 344 127.1C344 150.1 361.9 167.1 384 167.1z"
         />
       </Svg>
+      <P>안녕하세요</P>
     </Wrapper>
   );
 }
