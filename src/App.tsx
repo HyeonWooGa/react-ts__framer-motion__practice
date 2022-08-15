@@ -21,15 +21,15 @@ const Box = styled(motion.div)`
   font-weight: 600;
 `;
 
-const boxVariants = {};
+const boxVariants = {
+  hover: { scale: 1.5, rotateZ: 90 },
+  click: { scale: 1, borderRadius: "100px" },
+};
 
 function App() {
   return (
     <Wrapper>
-      <Box
-        whileHover={{ scale: 1.5, rotateZ: 90 }}
-        whileTap={{ scale: 1, borderRadius: "100px" }}
-      />
+      <Box variants={boxVariants} whileHover="hover" whileTap="click" />
     </Wrapper>
   );
 }
