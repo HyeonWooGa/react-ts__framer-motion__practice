@@ -29,6 +29,7 @@ const boxVariants = {
 function App() {
   return (
     <Wrapper>
+      {/* boxVariants.hover, boxVariants.click */}
       <Box variants={boxVariants} whileHover="hover" whileTap="click" />
     </Wrapper>
   );
