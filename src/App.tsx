@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
@@ -38,13 +38,14 @@ const boxVariants = {
 };
 
 function App() {
+  const biggerBoxRef = useRef<HTMLDivElement>(null);
   return (
     <Wrapper>
       {/* boxVariants.hover, boxVariants.click */}
-      <BiggerBox>
+      <BiggerBox ref={biggerBoxRef}>
         <Box
           drag
-          dragConstraints={{ top: -200, bottom: 200, left: -200, right: 200 }}
+          dragConstraints={biggerBoxRef}
           variants={boxVariants}
           whileHover="hover"
           whileTap="click"
