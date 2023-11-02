@@ -6,8 +6,10 @@ const Wrapper = styled(motion.div)`
   height: 100vh;
   width: 100vw;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  gap: 30px;
   background: linear-gradient(135deg, rgb(0, 238, 154), rgb(238, 178, 0));
 `;
 
@@ -24,7 +26,7 @@ const Grid = styled.div`
 
 const Box = styled(motion.div)`
   height: 200px;
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0.6);
   border-radius: 40px;
   display: flex;
   justify-content: center;
@@ -40,28 +42,48 @@ const Overlay = styled(motion.div)`
   align-items: center;
 `;
 
+const Circle = styled(motion.div)`
+  height: 45px;
+  width: 45px;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 100%;
+`
+
+const BtnSwitch = styled.button<{ $isClicked?: boolean }>`
+  color: ${props => props.$isClicked && "red"};
+`
+
+
 function App() {
   const [id, setId] = useState<null | string>(null);
+  const [isClickedSwitch, setIsClickedSwitch] = useState<boolean>(false);
   console.log(id);
   return (
     <Wrapper>
       <Grid>
         {["1", "2", "3", "4"].map((n) => (
-          <Box onClick={() => setId(n)} key={n} layoutId={n} />
-        ))}
+          <Box onClick={() => setId(n)} key={n} layoutId={n} whileHover={{scale: 1.02}}>
+            {isClickedSwitch === false && "2" === n ?<Circle layoutId="5" /> : null}
+            {isClickedSwitch === true && "3" === n ?<Circle layoutId="5" /> : null}
+            </Box>
+          ))}
       </Grid>
       <AnimatePresence>
         {id ? (
           <Overlay
-            onClick={() => setId(null)}
-            initial={{ backgroundColor: "rgba(0,0,0,0)" }}
-            animate={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-            exit={{ backgroundColor: "rgba(0,0,0,0)" }}
+          onClick={() => setId(null)}
+          initial={{ backgroundColor: "rgba(0,0,0,0)" }}
+          animate={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          exit={{ backgroundColor: "rgba(0,0,0,0)" }}
           >
-            <Box layoutId={id} style={{ width: 400, height: 200 }} />
+            <Box layoutId={id} style={{ width: 400, height: 200 }}>
+            {isClickedSwitch === false && "2" === id ?<Circle layoutId="5" /> : null}
+            {isClickedSwitch === true && "3" === id ?<Circle layoutId="5" /> : null}
+            </Box>
           </Overlay>
         ) : null}
       </AnimatePresence>
+      {isClickedSwitch ? <BtnSwitch onClick={() => setIsClickedSwitch(!isClickedSwitch) } $isClicked>switch</BtnSwitch> : <BtnSwitch onClick={() => setIsClickedSwitch(!isClickedSwitch) }>switch</BtnSwitch>}
     </Wrapper>
   );
 }
